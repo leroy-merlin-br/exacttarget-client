@@ -1,0 +1,22 @@
+{
+  "name": "leroy-merlin-br/laravel-exacttarget",
+  "description": "Easy way to interact with ExactTarget REST API in Laravel",
+  "keywords": ["exacttarget", "laravel", "salesforce", "rest", "api", "sdk"],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/config": "~4.1",
+    "illuminate/support": "~4.1",
+    "curl/curl": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.0",
+    "mockery/mockery": "^0.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "LeroyMerlin\\ExactTarget\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
