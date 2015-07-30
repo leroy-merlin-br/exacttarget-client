@@ -1,4 +1,4 @@
-# ExactTarget API wrapper_for Laravel_
+# ExactTarget API wrapper _for Laravel_
 
 A wrapper to ExactTarget **REST** API.
 
