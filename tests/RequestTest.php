@@ -1,15 +1,23 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
-use PHPUnit_Framework_TestCase as TestCase;
-
 use Mockery as m;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
 * Test case for Request class
 */
 class RequestTest extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+        m::close();
+    }
+
     public function testCallShouldHitEndpointUsingDefaultParameters()
     {
         $verb             = 'get';
@@ -55,5 +63,23 @@ class RequestTest extends TestCase
             $parameters,
             $subdomain
         ));
+    }
+
+    /**
+     * @expectedException LeroyMerlin\ExactTarget\Exception\RequestException
+     * @expectedExceptionMessage 500: Server Error
+     */
+    public function testCallShouldThrowAnExceptionIfRequestFails()
+    {
+        $client = m::mock('GuzzleHttp\ClientInterface');
+        $client->shouldReceive('request')
+            ->once()
+            ->andThrow(
+                'GuzzleHttp\Exception\ClientException',
+                '500: Server Error',
+                m::mock('Psr\Http\Message\RequestInterface')
+            );
+
+        (new Request($client))->call('some-action');
     }
 }

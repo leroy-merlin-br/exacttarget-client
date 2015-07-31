@@ -1,7 +1,9 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use LeroyMerlin\ExactTarget\Exception\RequestException;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 
 /**
 * This class is responsible to execute calls to SalesForce API.
@@ -38,9 +40,10 @@ class Request
      * they will be replaced by a $param with the same name containing a string
      * or int.
      *
-     * @param  string $verb      May be get,delete,head,options,patch,post,put
-     * @param  string $action    Url where curly braces will be replaces, Ex: add/{id}/something
-     * @param  array $parameters Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
+     * @param  string $verb       May be get,delete,head,options,patch,post,put
+     * @param  string $action     Url where curly braces will be replaces, Ex: add/{id}/something
+     * @param  array  $parameters Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
+     * @param  string $subdomain  Subdomain to use in base URL of API
      *
      * @return array Response data
      */
@@ -50,10 +53,18 @@ class Request
         array $parameters = [],
         $subdomain = 'www'
     ) {
-        return $this->client->request(
-            $verb,
-            sprintf(self::ENDPOINT, $subdomain, $action),
-            $parameters
-        );
+        try {
+            return $this->client->request(
+                $verb,
+                sprintf(self::ENDPOINT, $subdomain, $action),
+                $parameters
+            );
+        } catch (ClientException $error) {
+            throw new RequestException(
+                $error->getMessage(),
+                $error->getCode(),
+                $error
+            );
+        }
     }
 }
