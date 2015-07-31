@@ -31,8 +31,8 @@ class Token
     public function get($clientId, $clientSecret)
     {
         return $this->request->call(
-            'post',
             'requestToken',
+            'post',
             compact('clientId', 'clientSecret'),
             'auth'
         );
