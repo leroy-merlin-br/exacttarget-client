@@ -24,6 +24,8 @@ class Request
 
     /**
      * Constructor
+     *
+     * @param ClientInterface $client
      */
     public function __construct(ClientInterface $client)
     {
