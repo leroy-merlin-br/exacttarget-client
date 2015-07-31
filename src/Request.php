@@ -1,12 +1,34 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use GuzzleHttp\ClientInterface;
+
 /**
 * This class is responsible to execute calls to SalesForce API.
 */
 class Request
 {
-    const ENDPOINT = 'https://%s.exacttargetapis.com/v1/';
+    /**
+     * Base API url
+     *
+     * @var string
+     */
+    const ENDPOINT = 'https://%s.exacttargetapis.com/v1/%s';
+
+    /**
+     * Guzzle client to handle requests
+     *
+     * @var ClientInterface
+     */
+    protected $client;
+
+    /**
+     * Constructor
+     */
+    public function __construct(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
 
     /**
      * Will perform a $verb request to the given $endpoint with $parameters.
@@ -15,17 +37,21 @@ class Request
      * or int.
      *
      * @param  string $verb      May be get,delete,head,options,patch,post,put
-     * @param  string $endpoint  Url where curly braces will be replaces, Ex: add/{id}/something
+     * @param  string $action    Url where curly braces will be replaces, Ex: add/{id}/something
      * @param  array $parameters Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
      *
      * @return array Response data
      */
     public function call(
-        $endpoint,
+        $action,
         $verb = 'get',
         array $parameters = [],
         $subdomain = 'www'
     ) {
-        throw new \BadMethodCallException('Not implemented yet!');
+        return $this->client->request(
+            $verb,
+            sprintf(self::ENDPOINT, $subdomain, $action),
+            $parameters
+        );
     }
 }
