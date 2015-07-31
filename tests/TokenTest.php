@@ -13,12 +13,15 @@ class TokenTest extends TestCase
     {
         $clientId     = 'my-client-id';
         $clientSecret = 'my-super-secret-pass';
-        $request      = m::mock('LeroyMerlin\ExactTarget\Request[call]');
+        $request      = m::mock(
+            'LeroyMerlin\ExactTarget\Request[call]',
+            [m::mock('GuzzleHttp\ClientInterface')]
+        );
 
         $request->shouldReceive('call')
             ->with(
-                'post',
                 'requestToken',
+                'post',
                 compact('clientId', 'clientSecret'),
                 'auth'
             )->once()
