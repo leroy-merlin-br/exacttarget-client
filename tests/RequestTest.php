@@ -30,7 +30,7 @@ class RequestTest extends TestCase
             ->with(
                 $verb,
                 sprintf(Request::ENDPOINT, $subdomain, $action),
-                []
+                ['json' => []]
             )->once()
             ->andReturn($expectedResponse);
 
@@ -53,7 +53,7 @@ class RequestTest extends TestCase
             ->with(
                 $verb,
                 sprintf(Request::ENDPOINT, $subdomain, $action),
-                $parameters
+                ['json' => $parameters]
             )->once()
             ->andReturn($expectedResponse);
 

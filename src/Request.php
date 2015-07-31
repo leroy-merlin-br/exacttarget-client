@@ -57,7 +57,7 @@ class Request
             return $this->client->request(
                 $verb,
                 sprintf(self::ENDPOINT, $subdomain, $action),
-                $parameters
+                ['json' => $parameters]
             );
         } catch (GuzzleException $error) {
             throw new RequestException(
