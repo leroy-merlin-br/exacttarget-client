@@ -3,7 +3,7 @@ namespace LeroyMerlin\ExactTarget;
 
 use LeroyMerlin\ExactTarget\Exception\RequestException;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException as GuzzleException;
 
 /**
 * This class is responsible to execute calls to SalesForce API.
@@ -59,11 +59,10 @@ class Request
                 sprintf(self::ENDPOINT, $subdomain, $action),
                 $parameters
             );
-        } catch (ClientException $error) {
+        } catch (GuzzleException $error) {
             throw new RequestException(
-                $error->getMessage(),
-                $error->getCode(),
-                $error
+                (string)$error->getResponse()->getBody(),
+                $error->getCode()
             );
         }
     }

@@ -67,18 +67,25 @@ class RequestTest extends TestCase
 
     /**
      * @expectedException LeroyMerlin\ExactTarget\Exception\RequestException
-     * @expectedExceptionMessage 500: Server Error
+     * @expectedExceptionMessage Unexpected error ocurred
      */
     public function testCallShouldThrowAnExceptionIfRequestFails()
     {
+        $exception = m::mock('GuzzleHttp\Exception\ClientException');
+        $response  = m::mock('Psr\Http\Message\ResponseInterface');
+
+        $response->shouldReceive('getBody')
+            ->once()
+            ->andReturn('Unexpected error ocurred');
+
+        $exception->shouldReceive('getResponse')
+            ->once()
+            ->andReturn($response);
+
         $client = m::mock('GuzzleHttp\ClientInterface');
         $client->shouldReceive('request')
             ->once()
-            ->andThrow(
-                'GuzzleHttp\Exception\ClientException',
-                '500: Server Error',
-                m::mock('Psr\Http\Message\RequestInterface')
-            );
+            ->andThrow($exception);
 
         (new Request($client))->call('some-action');
     }
