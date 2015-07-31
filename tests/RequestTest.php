@@ -10,7 +10,7 @@ use Mockery as m;
 */
 class RequestTest extends TestCase
 {
-    public function testPerformRequestShouldHitEndpointUsingDefaultParameters()
+    public function testCallShouldHitEndpointUsingDefaultParameters()
     {
         $verb             = 'get';
         $action           = 'api-action';
@@ -20,7 +20,7 @@ class RequestTest extends TestCase
 
         $client->shouldReceive('request')
             ->with(
-                'get',
+                $verb,
                 sprintf(Request::ENDPOINT, $subdomain, $action),
                 []
             )->once()
@@ -30,5 +30,30 @@ class RequestTest extends TestCase
             $expectedResponse,
             (new Request($client))->call($action)
         );
+    }
+
+    public function testCallShouldHitEndpointUsingCustomParameters()
+    {
+        $verb             = 'custom';
+        $action           = 'custom-api-action';
+        $subdomain        = 'custom';
+        $parameters       = ['some', 'custom', 'parameters'];
+        $expectedResponse = 'custom-action-response';
+        $client           = m::mock('GuzzleHttp\ClientInterface');
+
+        $client->shouldReceive('request')
+            ->with(
+                $verb,
+                sprintf(Request::ENDPOINT, $subdomain, $action),
+                $parameters
+            )->once()
+            ->andReturn($expectedResponse);
+
+        $this->assertEquals($expectedResponse, (new Request($client))->call(
+            $action,
+            $verb,
+            $parameters,
+            $subdomain
+        ));
     }
 }
