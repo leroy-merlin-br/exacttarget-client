@@ -21,8 +21,8 @@ class Request
      * @return array Response data
      */
     public function call(
-        $verb,
         $endpoint,
+        $verb = 'get',
         array $parameters = [],
         $subdomain = 'www'
     ) {
