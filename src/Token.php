@@ -33,7 +33,8 @@ class Token
         return $this->request->call(
             'post',
             'requestToken',
-            compact('clientId', 'clientSecret')
+            compact('clientId', 'clientSecret'),
+            'auth'
         );
     }
 }

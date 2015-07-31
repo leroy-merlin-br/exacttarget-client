@@ -16,8 +16,12 @@ class TokenTest extends TestCase
         $request      = m::mock('LeroyMerlin\ExactTarget\Request[call]');
 
         $request->shouldReceive('call')
-            ->with('post', 'requestToken', compact('clientId', 'clientSecret'))
-            ->once()
+            ->with(
+                'post',
+                'requestToken',
+                compact('clientId', 'clientSecret'),
+                'auth'
+            )->once()
             ->andReturn('my-super-token');
 
         $this->assertEquals(

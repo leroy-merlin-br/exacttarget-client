@@ -6,6 +6,8 @@ namespace LeroyMerlin\ExactTarget;
 */
 class Request
 {
+    const ENDPOINT = 'https://%s.exacttargetapis.com/v1/';
+
     /**
      * Will perform a $verb request to the given $endpoint with $parameters.
      * If anywhere in the url there is a name of a parameter within curly braces
@@ -18,8 +20,12 @@ class Request
      *
      * @return array Response data
      */
-    public function call($verb, $endpoint, array $parameters = [])
-    {
+    public function call(
+        $verb,
+        $endpoint,
+        array $parameters = [],
+        $subdomain = 'www'
+    ) {
         throw new \BadMethodCallException('Not implemented yet!');
     }
 }
