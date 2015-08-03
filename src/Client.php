@@ -49,8 +49,10 @@ class Client
                 $actionInfo['service']
             ),
             $actionInfo['method'],
-            ['json' => $arguments[0], 'Authorization' => 'Bearer '.$token],
-            $actionInfo['subdomain']
+            [
+                'json'    => $arguments[0],
+                'headers' => ['Authorization' => 'Bearer '.$token]
+            ]
         );
     }
 

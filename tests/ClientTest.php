@@ -32,7 +32,7 @@ class ClientTest extends TestCase
         $parameters         = ['my' => 'parameters'];
         $expectedParameters = [
             'json' => $parameters,
-            'Authorization' => 'Bearer '.$tokenString,
+            'headers' => ['Authorization' => 'Bearer '.$tokenString],
         ];
 
         $token->shouldReceive('request')
