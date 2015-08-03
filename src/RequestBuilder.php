@@ -36,9 +36,6 @@ class RequestBuilder
 
     /**
      * Will perform a $verb request to the given $endpoint with $parameters.
-     * If anywhere in the url there is a name of a parameter within curly braces
-     * they will be replaced by a $param with the same name containing a string
-     * or int.
      *
      * @param  string $verb       May be get,delete,head,options,patch,post,put
      * @param  string $action     Url where curly braces will be replaces, Ex: add/{id}/something
