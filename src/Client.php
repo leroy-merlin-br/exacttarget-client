@@ -44,7 +44,7 @@ class Client
         return $this->requestBuilder->request(
             $actionInfo['action'],
             $actionInfo['method'] ?: 'get',
-            $arguments[0],
+            array_merge($arguments[0], ['Authorization' => 'Bearer '.$token]),
             'www'
         );
     }
@@ -62,6 +62,11 @@ class Client
             return $this->accessToken;
         }
 
-        return $this->accessToken = $this->token->request();
+        $response = json_decode(
+            $this->token->request()->getResponse()->getBody(),
+            true
+        );
+
+        return $this->accessToken = $response['accessToken'];
     }
 }

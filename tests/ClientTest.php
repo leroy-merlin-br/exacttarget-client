@@ -24,15 +24,27 @@ class ClientTest extends TestCase
             'LeroyMerlin\ExactTarget\RequestBuilder[request]',
             [m::mock('GuzzleHttp\ClientInterface')]
         );
+        $tokenString = 'my-token';
         $token = m::mock(
             'LeroyMerlin\ExactTarget\Token[request]',
             ['client-id', 'client-secret', $requestBuilder]
         );
-        $parameters = ['my', 'parameters'];
+        $parameters = [
+            'my' => 'parameters',
+            'Authorization' => 'Bearer '.$tokenString
+        ];
 
         $token->shouldReceive('request')
             ->once()
-            ->andReturn('my-token');
+            ->andReturnSelf()
+            ->getMock()
+        ->shouldReceive('getResponse')
+            ->once()
+            ->andReturnSelf()
+            ->getMock()
+        ->shouldReceive('getBody')
+            ->once()
+            ->andReturn(json_encode(['accessToken' => $tokenString]));
 
         $response = 'awesome response';
         $requestBuilder->shouldReceive('request')
