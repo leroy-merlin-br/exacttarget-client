@@ -20,10 +20,9 @@ class TokenTest extends TestCase
 
         $requestBuilder->shouldReceive('request')
             ->with(
-                'requestToken',
+                'https://auth.exacttargetapis.com/v1/requestToken',
                 'post',
-                ['json' => compact('clientId', 'clientSecret')],
-                'auth'
+                ['json' => compact('clientId', 'clientSecret')]
             )->once()
             ->andReturn('my-super-token');
 

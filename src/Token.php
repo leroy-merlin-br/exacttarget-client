@@ -53,10 +53,13 @@ class Token
         ];
 
         return $this->requestBuilder->request(
-            $requestInfo['action'],
+            (new UrlBuilder())->build(
+                $requestInfo['subdomain'],
+                $requestInfo['action'],
+                $requestInfo['service']
+            ),
             $requestInfo['method'],
-            ['json' => $parameters],
-            $requestInfo['subdomain']
+            ['json' => $parameters]
         );
     }
 }
