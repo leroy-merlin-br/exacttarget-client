@@ -39,12 +39,14 @@ class ServiceEnumTest extends TestCase
             ['requestToken', [
                 'method'    => 'post',
                 'action'    => 'requestToken',
-                'subdomain' => 'auth'
+                'subdomain' => 'auth',
+                'service'   => null,
             ]],
             ['createContact', [
                 'method'    => 'post',
                 'action'    => 'contacts',
-                'subdomain' => 'www'
+                'subdomain' => 'www',
+                'service'   => 'contacts',
             ]],
         ];
     }

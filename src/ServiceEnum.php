@@ -21,8 +21,9 @@ class ServiceEnum
             'subdomain' => 'auth',
         ],
         'createContact' => [
-            'method' => 'post',
-            'action' => 'contacts',
+            'service' => 'contacts',
+            'method'  => 'post',
+            'action'  => 'contacts',
         ],
     ];
 
@@ -32,6 +33,7 @@ class ServiceEnum
     protected static $defaultOptions = [
         'method'    => 'get',
         'subdomain' => 'www',
+        'service'   => null,
     ];
 
     /**

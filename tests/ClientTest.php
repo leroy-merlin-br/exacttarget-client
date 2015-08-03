@@ -46,8 +46,11 @@ class ClientTest extends TestCase
         $response = 'awesome response';
         $requestBuilder->shouldReceive('request')
             ->once()
-            ->with('contacts', 'post', $expectedParameters, 'www')
-            ->andReturn($response);
+            ->with(
+                'https://www.exacttargetapis.com/contacts/v1/contacts',
+                'post',
+                $expectedParameters
+            )->andReturn($response);
 
         $this->assertEquals(
             $response,

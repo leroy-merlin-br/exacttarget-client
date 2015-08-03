@@ -23,6 +23,7 @@ class Client
     {
         $this->token          = $token;
         $this->requestBuilder = $requestBuilder;
+        $this->urlBuilder     = new UrlBuilder();
     }
 
     /**
@@ -42,7 +43,11 @@ class Client
         $actionInfo = ServiceEnum::toEndpoint($action);
 
         return $this->requestBuilder->request(
-            $actionInfo['action'],
+            $this->urlBuilder->build(
+                $actionInfo['subdomain'],
+                $actionInfo['action'],
+                $actionInfo['service']
+            ),
             $actionInfo['method'],
             ['json' => $arguments[0], 'Authorization' => 'Bearer '.$token],
             $actionInfo['subdomain']

@@ -21,49 +21,40 @@ class RequestBuilderTest extends TestCase
     public function testCallShouldHitEndpointUsingDefaultParameters()
     {
         $verb             = 'get';
-        $action           = 'api-action';
-        $subdomain        = 'www';
+        $endpoint         = 'http://phpunit.com/api-action';
         $expectedResponse = 'action-response';
         $client           = m::mock('GuzzleHttp\ClientInterface');
 
         $client->shouldReceive('request')
-            ->with(
-                $verb,
-                sprintf(RequestBuilder::ENDPOINT, $subdomain, $action),
-                []
-            )->once()
+            ->with($verb, $endpoint, [])
+            ->once()
             ->andReturn($expectedResponse);
 
         $this->assertEquals(
             $expectedResponse,
-            (new RequestBuilder($client))->request($action)
+            (new RequestBuilder($client))->request($endpoint)
         );
     }
 
     public function testCallShouldHitEndpointUsingCustomParameters()
     {
         $verb             = 'custom';
-        $action           = 'custom-api-action';
-        $subdomain        = 'custom';
+        $endpoint         = 'http://phpunit.com/custom-api-action';
         $parameters       = ['some', 'custom', 'parameters'];
         $expectedResponse = 'custom-action-response';
         $client           = m::mock('GuzzleHttp\ClientInterface');
 
         $client->shouldReceive('request')
-            ->with(
-                $verb,
-                sprintf(RequestBuilder::ENDPOINT, $subdomain, $action),
-                $parameters
-            )->once()
+            ->with($verb, $endpoint, $parameters)
+            ->once()
             ->andReturn($expectedResponse);
 
         $this->assertEquals(
             $expectedResponse,
             (new RequestBuilder($client))->request(
-                $action,
+                $endpoint,
                 $verb,
-                $parameters,
-                $subdomain
+                $parameters
             )
         );
     }

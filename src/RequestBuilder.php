@@ -11,13 +11,6 @@ use GuzzleHttp\Exception\RequestException as GuzzleException;
 class RequestBuilder
 {
     /**
-     * Base API url
-     *
-     * @var string
-     */
-    const ENDPOINT = 'https://%s.exacttargetapis.com/v1/%s';
-
-    /**
      * Guzzle client to handle requests
      *
      * @var ClientInterface
@@ -37,25 +30,19 @@ class RequestBuilder
     /**
      * Will perform a $verb request to the given $endpoint with $parameters.
      *
+     * @param  string $endpoint     Url where curly braces will be replaces, Ex: add/{id}/something
      * @param  string $verb       May be get,delete,head,options,patch,post,put
-     * @param  string $action     Url where curly braces will be replaces, Ex: add/{id}/something
      * @param  array  $parameters Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
-     * @param  string $subdomain  Subdomain to use in base URL of API
      *
      * @return array Response data
      */
     public function request(
-        $action,
+        $endpoint,
         $verb = 'get',
-        array $parameters = [],
-        $subdomain = 'www'
+        array $parameters = []
     ) {
         try {
-            return $this->client->request(
-                $verb,
-                sprintf(self::ENDPOINT, $subdomain, $action),
-                $parameters
-            );
+            return $this->client->request($verb, $endpoint, $parameters);
         } catch (GuzzleException $error) {
             throw new RequestException(
                 (string)$error->getResponse()->getBody(),
