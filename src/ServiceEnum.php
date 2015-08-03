@@ -10,18 +10,11 @@ use LeroyMerlin\ExactTarget\Exception\ActionNotFoundException;
 class ServiceEnum
 {
     /**
-     * Instance to use singleton
-     *
-     * @var self
-     */
-    protected static $instance;
-
-    /**
      * List all allowed services
      *
      * @var array
      */
-    protected $actionList = [
+    protected static $actionList = [
         'requestToken' => [
             'method'    => 'post',
             'action'    => 'requestToken',
@@ -36,7 +29,7 @@ class ServiceEnum
     /**
      * @var array Default values when key do not exist in $actionList array
      */
-    protected $defaultOptions = [
+    protected static $defaultOptions = [
         'method'    => 'get',
         'subdomain' => 'www',
     ];
@@ -52,29 +45,10 @@ class ServiceEnum
      */
     public static function toEndpoint($action)
     {
-        $instance = self::getInstance();
-
-        if (false === array_key_exists($action, $instance->actionList)) {
+        if (false === array_key_exists($action, self::$actionList)) {
             throw new ActionNotFoundException($action);
         }
 
-        return array_merge(
-            $instance->defaultOptions,
-            $instance->actionList[$action]
-        );
-    }
-
-    /**
-     * Retrieves a self instance
-     *
-     * @return self
-     */
-    protected static function getInstance()
-    {
-        if (false === is_null(self::$instance)) {
-            return self::$instance;
-        }
-
-        return self::$instance = new self();
+        return array_merge(self::$defaultOptions, self::$actionList[$action]);
     }
 }
