@@ -8,33 +8,55 @@ namespace LeroyMerlin\ExactTarget;
 class Token
 {
     /**
+     * @var string
+     */
+    protected $clientId;
+
+    /**
+     * @var string
+     */
+    protected $clientSecret;
+
+    /**
      * @var RequestBuilder
      */
     protected $requestBuilder;
 
     /**
      * Constructor
+     *
+     * @param string         $clientId     ExactTarget client ID
+     * @param string         $clientSecret ExactTarget client secret
+     * @param RequestBuilder $requesstBuilder
      */
-    public function __construct(RequestBuilder $requestBuilder)
-    {
+    public function __construct(
+        $clientId,
+        $clientSecret,
+        RequestBuilder $requestBuilder
+    ) {
+        $this->clientId       = $clientId;
+        $this->clientSecret   = $clientSecret;
         $this->requestBuilder = $requestBuilder;
     }
 
     /**
      * Retrieves a new token to API authentication
      *
-     * @param  string $clientId
-     * @param  string $clientSecret
-     *
      * @return string
      */
-    public function get($clientId, $clientSecret)
+    public function request()
     {
+        $requestInfo = ServiceEnum::toEndpoint('requestToken');
+        $parameters  = [
+            'clientId'     => $this->clientId,
+            'clientSecret' => $this->clientSecret
+        ];
+
         return $this->requestBuilder->request(
-            'requestToken',
-            'post',
-            compact('clientId', 'clientSecret'),
-            'auth'
+            $requestInfo['action'],
+            $requestInfo['method'],
+            $parameters,
+            $requestInfo['subdomain']
         );
     }
 }

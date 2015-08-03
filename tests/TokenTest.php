@@ -11,14 +11,14 @@ class TokenTest extends TestCase
 {
     public function testGetShouldExecuteRequestAndRetrieveATokenSuccessfully()
     {
-        $clientId     = 'my-client-id';
-        $clientSecret = 'my-super-secret-pass';
-        $request      = m::mock(
+        $clientId       = 'my-client-id';
+        $clientSecret   = 'my-super-secret-pass';
+        $requestBuilder = m::mock(
             'LeroyMerlin\ExactTarget\RequestBuilder[request]',
             [m::mock('GuzzleHttp\ClientInterface')]
         );
 
-        $request->shouldReceive('request')
+        $requestBuilder->shouldReceive('request')
             ->with(
                 'requestToken',
                 'post',
@@ -29,7 +29,7 @@ class TokenTest extends TestCase
 
         $this->assertEquals(
             'my-super-token',
-            (new Token($request))->get($clientId, $clientSecret)
+            (new Token($clientId, $clientSecret, $requestBuilder))->request()
         );
     }
 }

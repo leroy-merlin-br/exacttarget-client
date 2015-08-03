@@ -7,7 +7,7 @@ class Client
 
     /**
      * OAuth token passed to API requests. You can set it manually or request
-     * it using the requestToken method.
+     * it using the getToken method.
      * @var string
      */
     public $accessToken;
@@ -17,11 +17,11 @@ class Client
      *
      * @param \Illuminate\Foundation\Application $app
      */
-    public function __construct($app = null)
+    public function __construct(Token $token, RequestBuilder $requestBuilder)
     {
-        if (!$app && function_exists('app')) {
-            $app = app();
-        }
+        $this->token          = $token;
+        $this->requestBuilder = $requestBuilder;
+    }
 
         $this->app = $app;
     }
@@ -38,14 +38,10 @@ class Client
      *
      * @return string|null Access token to be used in subsequent API requests
      */
-    public function requestToken($clientID = null, $clientSecret = null)
+    protected function getToken()
     {
-        $response = $this->performRequest('post', 'requestToken', compact('clientID', 'clientSecret'));
-
-        if (isset($response['accessToken'])) {
-            $this->accessToken = $response['accessToken'];
-
-            return $response['accessToken'];
+        if (false === is_null($this->accessToken)) {
+            return $this->accessToken;
         }
     }
 
@@ -64,5 +60,6 @@ class Client
     protected function performRequest($verb, $url, $params)
     {
 
+        return $this->accessToken = $this->token->request();
     }
 }
