@@ -29,9 +29,10 @@ class ClientTest extends TestCase
             'LeroyMerlin\ExactTarget\Token[request]',
             ['client-id', 'client-secret', $requestBuilder]
         );
-        $parameters = [
-            'my' => 'parameters',
-            'Authorization' => 'Bearer '.$tokenString
+        $parameters         = ['my' => 'parameters'];
+        $expectedParameters = [
+            'json' => $parameters,
+            'Authorization' => 'Bearer '.$tokenString,
         ];
 
         $token->shouldReceive('request')
@@ -49,7 +50,7 @@ class ClientTest extends TestCase
         $response = 'awesome response';
         $requestBuilder->shouldReceive('request')
             ->once()
-            ->with('contacts', 'post', $parameters, 'www')
+            ->with('contacts', 'post', $expectedParameters, 'www')
             ->andReturn($response);
 
         $this->assertEquals(

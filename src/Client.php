@@ -43,9 +43,9 @@ class Client
 
         return $this->requestBuilder->request(
             $actionInfo['action'],
-            $actionInfo['method'] ?: 'get',
-            array_merge($arguments[0], ['Authorization' => 'Bearer '.$token]),
-            'www'
+            $actionInfo['method'],
+            ['json' => $arguments[0], 'Authorization' => 'Bearer '.$token],
+            $actionInfo['subdomain']
         );
     }
 

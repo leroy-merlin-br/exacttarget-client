@@ -54,7 +54,7 @@ class RequestBuilder
             return $this->client->request(
                 $verb,
                 sprintf(self::ENDPOINT, $subdomain, $action),
-                ['json' => $parameters]
+                $parameters
             );
         } catch (GuzzleException $error) {
             throw new RequestException(

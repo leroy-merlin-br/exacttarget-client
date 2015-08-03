@@ -30,7 +30,7 @@ class RequestBuilderTest extends TestCase
             ->with(
                 $verb,
                 sprintf(RequestBuilder::ENDPOINT, $subdomain, $action),
-                ['json' => []]
+                []
             )->once()
             ->andReturn($expectedResponse);
 
@@ -53,7 +53,7 @@ class RequestBuilderTest extends TestCase
             ->with(
                 $verb,
                 sprintf(RequestBuilder::ENDPOINT, $subdomain, $action),
-                ['json' => $parameters]
+                $parameters
             )->once()
             ->andReturn($expectedResponse);
 
