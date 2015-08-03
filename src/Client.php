@@ -3,8 +3,6 @@ namespace LeroyMerlin\ExactTarget;
 
 class Client
 {
-    const ENDPOINT = 'https://auth.exacttargetapis.com/v1/';
-
     /**
      * OAuth token passed to API requests. You can set it manually or request
      * it using the getToken method.
@@ -23,7 +21,17 @@ class Client
         $this->requestBuilder = $requestBuilder;
     }
 
-        $this->app = $app;
+    public function __call($action, $arguments)
+    {
+        $token      = $this->getToken();
+        $actionInfo = ServiceEnum::toEndpoint($action);
+
+        return $this->requestBuilder->request(
+            $actionInfo['action'],
+            $actionInfo['method'] ?: 'get',
+            $arguments[0],
+            'www'
+        );
     }
 
     /**
@@ -43,22 +51,6 @@ class Client
         if (false === is_null($this->accessToken)) {
             return $this->accessToken;
         }
-    }
-
-    /**
-     * Will perform a $verb request to the given $url with $params.
-     * If anywhere in the url there is a name of a parameter within curly braces
-     * they will be replaced by a $param with the same name containing a string
-     * or int.
-     *
-     * @param  string $verb  May be get,delete,head,options,patch,post,put
-     * @param  string $url   Url where curly braces will be replaces, Ex: add/{id}/something
-     * @param  array $params Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
-     *
-     * @return array Response data
-     */
-    protected function performRequest($verb, $url, $params)
-    {
 
         return $this->accessToken = $this->token->request();
     }

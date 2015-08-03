@@ -27,6 +27,10 @@ class ServiceEnum
             'action'    => 'requestToken',
             'subdomain' => 'auth',
         ],
+        'createContact' => [
+            'method' => 'post',
+            'action' => 'contacts',
+        ],
     ];
 
     /**
