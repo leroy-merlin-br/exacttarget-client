@@ -14,7 +14,7 @@ class Client
     protected $accessToken;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param Token $token
      * @param RequestBuidler $requestBuilder
