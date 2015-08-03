@@ -22,7 +22,7 @@ class TokenTest extends TestCase
             ->with(
                 'requestToken',
                 'post',
-                compact('clientId', 'clientSecret'),
+                ['json' => compact('clientId', 'clientSecret')],
                 'auth'
             )->once()
             ->andReturn('my-super-token');

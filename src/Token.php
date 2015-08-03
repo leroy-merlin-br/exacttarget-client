@@ -55,7 +55,7 @@ class Token
         return $this->requestBuilder->request(
             $requestInfo['action'],
             $requestInfo['method'],
-            $parameters,
+            ['json' => $parameters],
             $requestInfo['subdomain']
         );
     }

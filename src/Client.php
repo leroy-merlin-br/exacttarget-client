@@ -63,7 +63,7 @@ class Client
         }
 
         $response = json_decode(
-            $this->token->request()->getResponse()->getBody(),
+            (string)$this->token->request()->getBody(),
             true
         );
 
