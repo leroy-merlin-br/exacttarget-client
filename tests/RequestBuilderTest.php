@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 /**
 * Test case for Request class
 */
-class RequestTest extends TestCase
+class RequestBuilderTest extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -29,14 +29,14 @@ class RequestTest extends TestCase
         $client->shouldReceive('request')
             ->with(
                 $verb,
-                sprintf(Request::ENDPOINT, $subdomain, $action),
+                sprintf(RequestBuilder::ENDPOINT, $subdomain, $action),
                 ['json' => []]
             )->once()
             ->andReturn($expectedResponse);
 
         $this->assertEquals(
             $expectedResponse,
-            (new Request($client))->call($action)
+            (new RequestBuilder($client))->request($action)
         );
     }
 
@@ -52,17 +52,20 @@ class RequestTest extends TestCase
         $client->shouldReceive('request')
             ->with(
                 $verb,
-                sprintf(Request::ENDPOINT, $subdomain, $action),
+                sprintf(RequestBuilder::ENDPOINT, $subdomain, $action),
                 ['json' => $parameters]
             )->once()
             ->andReturn($expectedResponse);
 
-        $this->assertEquals($expectedResponse, (new Request($client))->call(
-            $action,
-            $verb,
-            $parameters,
-            $subdomain
-        ));
+        $this->assertEquals(
+            $expectedResponse,
+            (new RequestBuilder($client))->request(
+                $action,
+                $verb,
+                $parameters,
+                $subdomain
+            )
+        );
     }
 
     /**
@@ -87,6 +90,6 @@ class RequestTest extends TestCase
             ->once()
             ->andThrow($exception);
 
-        (new Request($client))->call('some-action');
+        (new RequestBuilder($client))->request('some-action');
     }
 }

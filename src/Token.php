@@ -8,16 +8,16 @@ namespace LeroyMerlin\ExactTarget;
 class Token
 {
     /**
-     * @var Request
+     * @var RequestBuilder
      */
-    protected $request;
+    protected $requestBuilder;
 
     /**
      * Constructor
      */
-    public function __construct(Request $request)
+    public function __construct(RequestBuilder $requestBuilder)
     {
-        $this->request = $request;
+        $this->requestBuilder = $requestBuilder;
     }
 
     /**
@@ -30,7 +30,7 @@ class Token
      */
     public function get($clientId, $clientSecret)
     {
-        return $this->request->call(
+        return $this->requestBuilder->request(
             'requestToken',
             'post',
             compact('clientId', 'clientSecret'),

@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\RequestException as GuzzleException;
 /**
 * This class is responsible to execute calls to SalesForce API.
 */
-class Request
+class RequestBuilder
 {
     /**
      * Base API url
@@ -47,7 +47,7 @@ class Request
      *
      * @return array Response data
      */
-    public function call(
+    public function request(
         $action,
         $verb = 'get',
         array $parameters = [],
