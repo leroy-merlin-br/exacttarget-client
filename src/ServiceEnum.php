@@ -34,6 +34,14 @@ class ServiceEnum
     ];
 
     /**
+     * @var array Default values when key do not exist in $actionList array
+     */
+    protected $defaultOptions = [
+        'method'    => 'get',
+        'subdomain' => 'www',
+    ];
+
+    /**
      * Translate the given action to corresponding webservice endpoint
      *
      * @param  string $action
@@ -50,7 +58,10 @@ class ServiceEnum
             throw new ActionNotFoundException($action);
         }
 
-        return $instance->actionList[$action];
+        return array_merge(
+            $instance->defaultOptions,
+            $instance->actionList[$action]
+        );
     }
 
     /**
