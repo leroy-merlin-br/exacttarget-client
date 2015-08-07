@@ -28,4 +28,29 @@ class UrlBuilderTest extends TestCase
             (new UrlBuilder())->build($subdomain, $action, $service)
         );
     }
+
+    public function testBuildUrlWithCustomParametersShouldReturnUrlSuccessfully()
+    {
+        $parameters = [
+            'key'         => 'some-key',
+            'primaryKeys' => 'Key:Value',
+            'useless-key' => 'Useless value',
+        ];
+        $subdomain  = 'www';
+        $action     = 'dataevents/key:{key}/{primaryKeys}';
+        $service    = 'hub';
+        $this->assertEquals(
+            sprintf(
+                'https://www.exacttargetapis.com/hub/v1/dataevents/key:%s/%s',
+                $parameters['key'],
+                $parameters['primaryKeys']
+            ),
+            (new UrlBuilder())->build(
+                $subdomain,
+                $action,
+                $service,
+                $parameters
+            )
+        );
+    }
 }
