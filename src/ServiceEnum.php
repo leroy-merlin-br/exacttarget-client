@@ -20,10 +20,10 @@ class ServiceEnum
             'action'    => 'requestToken',
             'subdomain' => 'auth',
         ],
-        'createContact' => [
-            'service' => 'contacts',
-            'method'  => 'post',
-            'action'  => 'contacts',
+        'addDataExtensionRow' => [
+            'method'    => 'post',
+            'service'   => 'hub',
+            'action'    => 'dataevents/key:{key}/rowset',
         ],
     ];
 

@@ -47,14 +47,16 @@ class ClientTest extends TestCase
         $requestBuilder->shouldReceive('request')
             ->once()
             ->with(
-                'https://www.exacttargetapis.com/contacts/v1/contacts',
+                'https://auth.exacttargetapis.com/v1/requestToken',
                 'post',
                 $expectedParameters
             )->andReturn($response);
 
         $this->assertEquals(
             $response,
-            (new Client($token, $requestBuilder))->createContact($parameters)
+            (new Client($token, $requestBuilder))->requestToken(
+                $parameters
+            )
         );
     }
 }

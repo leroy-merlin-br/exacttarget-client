@@ -42,11 +42,11 @@ class ServiceEnumTest extends TestCase
                 'subdomain' => 'auth',
                 'service'   => null,
             ]],
-            ['createContact', [
+            ['addDataExtensionRow', [
                 'method'    => 'post',
-                'action'    => 'contacts',
                 'subdomain' => 'www',
-                'service'   => 'contacts',
+                'action'    => 'dataevents/key:{key}/rowset',
+                'service'   => 'hub',
             ]],
         ];
     }
