@@ -1,6 +1,8 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use LeroyMerlin\ExactTarget\Exception\MissingUrlParameterException;
+
 /**
 * Class to generate API endpoint by the given parameters
 */
@@ -35,6 +37,10 @@ class UrlBuilder
 
         $action = $this->replaceParameters($action, $parameters);
 
+        if ($missingParameters = $this->missingParameters($action)) {
+            throw new MissingUrlParameterException($missingParameters);
+        }
+
         return sprintf(self::ENDPOINT, $subdomain, $service, $action);
     }
 
@@ -52,5 +58,14 @@ class UrlBuilder
         }
 
         return $action;
+    }
+
+    private function missingParameters($action)
+    {
+        if (0 === preg_match_all("/\{([\w-]+)\}/i", $action, $matches)) {
+            return [];
+        }
+
+        return $matches[1];
     }
 }

@@ -53,4 +53,17 @@ class UrlBuilderTest extends TestCase
             )
         );
     }
+
+    /**
+     * @expectedException LeroyMerlin\ExactTarget\Exception\MissingUrlParameterException
+     * @expectedExceptionMessage Missing following parameter(s): key, another-key
+     */
+    public function testBuildUrlWithMissingParametersShouldThrowException()
+    {
+        $parameters = ['useful-key' => 'Useful value'];
+        $subdomain  = 'www';
+        $action     = 'dataevents/key:{key}/{another-key}/useful:{useful-key}';
+
+        (new UrlBuilder())->build($subdomain, $action, null, $parameters);
+    }
 }
