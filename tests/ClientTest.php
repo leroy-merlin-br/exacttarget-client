@@ -5,8 +5,8 @@ use Mockery as m;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
-* Test case for Client class
-*/
+ * Test case for Client class
+ */
 class ClientTest extends TestCase
 {
     /**
@@ -20,26 +20,26 @@ class ClientTest extends TestCase
 
     public function testPerformRequestShouldCallWebServiceUsingServiceEnum()
     {
-        $requestBuilder = m::mock(
+        $requestBuilder     = m::mock(
             'LeroyMerlin\ExactTarget\RequestBuilder[request]',
             [m::mock('GuzzleHttp\ClientInterface')]
         );
-        $tokenString = 'my-token';
-        $token = m::mock(
+        $tokenString        = 'my-token';
+        $token              = m::mock(
             'LeroyMerlin\ExactTarget\Token[request]',
             ['client-id', 'client-secret', $requestBuilder]
         );
         $parameters         = ['my' => 'parameters'];
         $expectedParameters = [
-            'json' => $parameters,
-            'headers' => ['Authorization' => 'Bearer '.$tokenString],
+            'json'    => $parameters,
+            'headers' => ['Authorization' => 'Bearer ' . $tokenString],
         ];
 
         $token->shouldReceive('request')
             ->once()
             ->andReturnSelf()
             ->getMock()
-        ->shouldReceive('getBody')
+            ->shouldReceive('getBody')
             ->once()
             ->andReturn(json_encode(['accessToken' => $tokenString]));
 

@@ -5,8 +5,8 @@ use Mockery as m;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
-* Test case for Request class
-*/
+ * Test case for Request class
+ */
 class RequestBuilderTest extends TestCase
 {
     /**
@@ -60,7 +60,7 @@ class RequestBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException LeroyMerlin\ExactTarget\Exception\RequestException
+     * @expectedException \LeroyMerlin\ExactTarget\Exception\RequestException
      * @expectedExceptionMessage Unexpected error ocurred
      */
     public function testCallShouldThrowAnExceptionIfRequestFails()

@@ -4,8 +4,8 @@ namespace LeroyMerlin\ExactTarget;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
-* Class to generate API endpoint by the given action
-*/
+ * Class to generate API endpoint by the given action
+ */
 class UrlBuilderTest extends TestCase
 {
     public function testBuildShouldCreateUrlWithoutService()
@@ -55,7 +55,7 @@ class UrlBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException LeroyMerlin\ExactTarget\Exception\MissingUrlParameterException
+     * @expectedException \LeroyMerlin\ExactTarget\Exception\MissingUrlParameterException
      * @expectedExceptionMessage Missing following parameter(s): key, another-key
      */
     public function testBuildUrlWithMissingParametersShouldThrowException()

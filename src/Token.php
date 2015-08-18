@@ -2,9 +2,9 @@
 namespace LeroyMerlin\ExactTarget;
 
 /**
-* This class is responsible to call API in order to get a token to authenticate
-* next API requests
-*/
+ * This class is responsible to call API in order to get a token to authenticate
+ * next API requests
+ */
 class Token
 {
     /**
@@ -27,7 +27,7 @@ class Token
      *
      * @param string         $clientId     ExactTarget client ID
      * @param string         $clientSecret ExactTarget client secret
-     * @param RequestBuilder $requesstBuilder
+     * @param RequestBuilder $requestBuilder
      */
     public function __construct(
         $clientId,
@@ -49,7 +49,7 @@ class Token
         $requestInfo = ServiceEnum::toEndpoint('requestToken');
         $parameters  = [
             'clientId'     => $this->clientId,
-            'clientSecret' => $this->clientSecret
+            'clientSecret' => $this->clientSecret,
         ];
 
         return $this->requestBuilder->request(
