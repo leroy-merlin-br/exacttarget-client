@@ -1,68 +1,83 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+/**
+ * This class is responsible to make the calls to ExactTarget API.
+ */
 class Client
 {
-    const ENDPOINT = 'https://auth.exacttargetapis.com/v1/';
-
     /**
-     * OAuth token passed to API requests. You can set it manually or request
-     * it using the requestToken method.
+     * OAuth token passed to API requests.
+     *
      * @var string
      */
-    public $accessToken;
+    protected $accessToken;
 
     /**
-     * Injects Laravel application into the instance
+     * Constructor
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param Token          $token
+     * @param RequestBuilder $requestBuilder
      */
-    public function __construct($app = null)
+    public function __construct(Token $token, RequestBuilder $requestBuilder)
     {
-        if (!$app && function_exists('app')) {
-            $app = app();
-        }
+        $this->token          = $token;
+        $this->requestBuilder = $requestBuilder;
+        $this->urlBuilder     = new UrlBuilder();
+    }
 
-        $this->app = $app;
+    /**
+     * Executes a service listed on ServiceEnum class.
+     *
+     * @param  string $action
+     * @param  array  $arguments
+     *
+     * @throws \LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
+     * @throws \LeroyMerlin\ExactTarget\Exception\RequestException
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function __call($action, $arguments)
+    {
+        $token      = $this->getToken();
+        $actionInfo = ServiceEnum::toEndpoint($action);
+
+        $parameters = count($arguments) ? $arguments[0] : [];
+        $data       = isset($parameters['data']) ? $parameters['data'] : [];
+
+        return $this->requestBuilder->request(
+            $this->urlBuilder->build(
+                $actionInfo['subdomain'],
+                $actionInfo['action'],
+                $actionInfo['service'],
+                $parameters
+            ),
+            $actionInfo['method'],
+            [
+                'json'    => $data,
+                'headers' => ['Authorization' => 'Bearer ' . $token],
+            ]
+        );
     }
 
     /**
      * Obtain and stores the OAuth token from ExactTarget. Even tought this
-     * method retuns the Access token, it will be stored within the instance
+     * method returns the Access token, it will be stored within the instance
      * for future requests.
-     * If no $clientID or $clientSecret is provided, they will be loaded from
-     * the config file.
      *
-     * @param  string $clientID     First part of the App Key pair generated when creating an application in App Center.
-     * @param  string $clientSecret Second part of the App Key pair generated when creating an application in App Center
-     *
-     * @return string|null Access token to be used in subsequent API requests
+     * @return string Access token to be used in subsequent API requests
      */
-    public function requestToken($clientID = null, $clientSecret = null)
+    protected function getToken()
     {
-        $response = $this->performRequest('post', 'requestToken', compact('clientID', 'clientSecret'));
-
-        if (isset($response['accessToken'])) {
-            $this->accessToken = $response['accessToken'];
-
-            return $response['accessToken'];
+        if (false === is_null($this->accessToken)) {
+            return $this->accessToken;
         }
-    }
 
-    /**
-     * Will perform a $verb request to the given $url with $params.
-     * If anywhere in the url there is a name of a parameter within curly braces
-     * they will be replaced by a $param with the same name containing a string
-     * or int.
-     *
-     * @param  string $verb  May be get,delete,head,options,patch,post,put
-     * @param  string $url   Url where curly braces will be replaces, Ex: add/{id}/something
-     * @param  array $params Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
-     *
-     * @return array Response data
-     */
-    protected function performRequest($verb, $url, $params)
-    {
+        $response = json_decode(
+            (string) $this->token->request()->getBody(),
+            true
+        );
 
+        return $this->accessToken = $response['accessToken'];
     }
 }

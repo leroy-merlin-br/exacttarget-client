@@ -1,5 +1,5 @@
 {
-  "name": "leroy-merlin-br/laravel-exacttarget",
+  "name": "leroy-merlin-br/exacttarget-client",
   "description": "Easy way to interact with ExactTarget REST API in Laravel",
   "keywords": ["exacttarget", "laravel", "salesforce", "rest", "api", "sdk"],
   "license": "MIT",
