@@ -1,57 +1,47 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
 class ServiceProvider extends LaravelServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
+     * @var string
      */
-    protected $defer = false;
+    protected $packageName = 'leroy-merlin-br/exacttarget-client';
 
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function boot()
     {
-        $this->handleConfigs();
+        $this->package($this->packageName);
     }
 
     /**
-     * Register the service provider.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function register()
     {
+        $this->app->bind('LeroyMerlin\ExactTarget\Client', function ($app) {
+            $requestBuilder = new RequestBuilder(new GuzzleClient());
 
-        // Bind any implementations.
+            return new Client(
+                new Token(
+                    $app['config']->get('clientId'),
+                    $app['config']->get('clientSecret'),
+                    $requestBuilder
+                ),
+                $requestBuilder
+            );
+        });
 
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-
-        return [];
+        $this->handleConfigs();
     }
 
     private function handleConfigs()
     {
-
-        $configPath = __DIR__ . '/../config/laravel-exacttarget.php';
-
-        $this->publishes([$configPath => config_path('laravel-exacttarget.php')]);
-
-        $this->mergeConfigFrom($configPath, 'laravel-exacttarget');
+        $this->app['config']->package($this->packageName, __DIR__.'/../config');
     }
 }
