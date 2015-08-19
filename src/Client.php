@@ -16,8 +16,8 @@ class Client
     /**
      * Constructor
      *
-     * @param Token $token
-     * @param RequestBuidler $requestBuilder
+     * @param Token          $token
+     * @param RequestBuilder $requestBuilder
      */
     public function __construct(Token $token, RequestBuilder $requestBuilder)
     {
@@ -30,35 +30,39 @@ class Client
      * Executes a service listed on ServiceEnum class.
      *
      * @param  string $action
-     * @param  mixed  $arguments
+     * @param  array  $arguments
      *
-     * @throws LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
-     * @throws LeroyMerlin\ExactTarget\Exception\RequestException
+     * @throws \LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
+     * @throws \LeroyMerlin\ExactTarget\Exception\RequestException
      *
-     * @return Psr7\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function __call($action, $arguments)
     {
         $token      = $this->getToken();
         $actionInfo = ServiceEnum::toEndpoint($action);
 
+        $parameters = count($arguments) ? $arguments[0] : [];
+        $data       = isset($parameters['data']) ? $parameters['data'] : [];
+
         return $this->requestBuilder->request(
             $this->urlBuilder->build(
                 $actionInfo['subdomain'],
                 $actionInfo['action'],
-                $actionInfo['service']
+                $actionInfo['service'],
+                $parameters
             ),
             $actionInfo['method'],
             [
-                'json'    => $arguments[0],
-                'headers' => ['Authorization' => 'Bearer '.$token]
+                'json'    => $data,
+                'headers' => ['Authorization' => 'Bearer ' . $token],
             ]
         );
     }
 
     /**
      * Obtain and stores the OAuth token from ExactTarget. Even tought this
-     * method retuns the Access token, it will be stored within the instance
+     * method returns the Access token, it will be stored within the instance
      * for future requests.
      *
      * @return string Access token to be used in subsequent API requests
@@ -70,7 +74,7 @@ class Client
         }
 
         $response = json_decode(
-            (string)$this->token->request()->getBody(),
+            (string) $this->token->request()->getBody(),
             true
         );
 
