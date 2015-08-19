@@ -30,7 +30,7 @@ class Client
      * Executes a service listed on ServiceEnum class.
      *
      * @param  string $action
-     * @param  mixed  $arguments
+     * @param  array  $arguments
      *
      * @throws \LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
      * @throws \LeroyMerlin\ExactTarget\Exception\RequestException
@@ -42,15 +42,19 @@ class Client
         $token      = $this->getToken();
         $actionInfo = ServiceEnum::toEndpoint($action);
 
+        $parameters = count($arguments) ? $arguments[0] : [];
+        $data       = isset($parameters['data']) ? $parameters['data'] : [];
+
         return $this->requestBuilder->request(
             $this->urlBuilder->build(
                 $actionInfo['subdomain'],
                 $actionInfo['action'],
-                $actionInfo['service']
+                $actionInfo['service'],
+                $parameters
             ),
             $actionInfo['method'],
             [
-                'json'    => $arguments[0],
+                'json'    => $data,
                 'headers' => ['Authorization' => 'Bearer ' . $token],
             ]
         );

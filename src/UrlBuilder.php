@@ -50,15 +50,19 @@ class UrlBuilder
      */
     private function replaceParameters($action, $parameters)
     {
-        foreach ($parameters as $key => $value) {
-            $action = str_replace(sprintf('{%s}', $key), $value, $action);
+        if (0 !== preg_match_all("/\{([\w-]+)\}/i", $action, $matches)) {
+            foreach ($matches[1] as $match) {
+                if (array_key_exists($match, $parameters)) {
+                    $action = str_replace(sprintf('{%s}', $match), $parameters[$match], $action);
+                }
+            }
         }
 
         return $action;
     }
 
     /**
-     * @param $action
+     * @param string $action
      *
      * @return array
      */

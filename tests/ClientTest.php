@@ -29,9 +29,13 @@ class ClientTest extends TestCase
             'LeroyMerlin\ExactTarget\Token[request]',
             ['client-id', 'client-secret', $requestBuilder]
         );
-        $parameters         = ['my' => 'parameters'];
+        $parameters         = [
+            'data' => [
+                'my' => 'parameters',
+            ],
+        ];
         $expectedParameters = [
-            'json'    => $parameters,
+            'json' => $parameters['data'],
             'headers' => ['Authorization' => 'Bearer ' . $tokenString],
         ];
 
@@ -54,7 +58,7 @@ class ClientTest extends TestCase
 
         $this->assertEquals(
             $response,
-            (new Client($token, $requestBuilder))->requestToken(
+            (new  Client($token, $requestBuilder))->requestToken(
                 $parameters
             )
         );
