@@ -2,8 +2,8 @@
 namespace LeroyMerlin\ExactTarget\Exception;
 
 /**
-* Exception to throw when action do not exists
-*/
+ * Exception to throw when action do not exists
+ */
 class ActionNotFoundException extends ExactTargetClientException
 {
     /**
@@ -14,8 +14,8 @@ class ActionNotFoundException extends ExactTargetClientException
     public function __construct($action)
     {
         parent::__construct(
-            'The following action key does not exist in '.
-            'ServiceEnum::$actionList: '.$action
+            'The following action key does not exist in ' .
+            'ServiceEnum::$actionList: ' . $action
         );
     }
 }

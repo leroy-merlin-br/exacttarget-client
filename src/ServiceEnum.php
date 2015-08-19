@@ -4,9 +4,9 @@ namespace LeroyMerlin\ExactTarget;
 use LeroyMerlin\ExactTarget\Exception\ActionNotFoundException;
 
 /**
-* Enum to list all web service endpoints in exactarget API. This enum is
-* responsible to 'translate' method names in endpoints
-*/
+ * Enum to list all web service endpoints in exactarget API. This enum is
+ * responsible to 'translate' method names in endpoints
+ */
 class ServiceEnum
 {
     /**
@@ -15,15 +15,15 @@ class ServiceEnum
      * @var array
      */
     protected static $actionList = [
-        'requestToken' => [
+        'requestToken'        => [
             'method'    => 'post',
             'action'    => 'requestToken',
             'subdomain' => 'auth',
         ],
         'addDataExtensionRow' => [
-            'method'    => 'post',
-            'service'   => 'hub',
-            'action'    => 'dataevents/key:{key}/rowset',
+            'method'  => 'post',
+            'service' => 'hub',
+            'action'  => 'dataevents/key:{key}/rowset',
         ],
         'validateEmail' => [
             'method'    => 'post',

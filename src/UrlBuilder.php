@@ -25,12 +25,8 @@ class UrlBuilder
      *
      * @return string
      */
-    public function build(
-        $subdomain,
-        $action,
-        $service = null,
-        array $parameters = []
-    ) {
+    public function build($subdomain, $action, $service = null, array $parameters = [])
+    {
         if (false === is_null($service)) {
             $service = '/' . $service;
         }
@@ -47,7 +43,8 @@ class UrlBuilder
     /**
      * Replace parameters in action var
      *
-     * @param  array $parameters
+     * @param  string $action
+     * @param  array  $parameters
      *
      * @return string
      */

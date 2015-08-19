@@ -24,7 +24,8 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        $this->app->bind('LeroyMerlin\ExactTarget\Client', function ($app) {
+        $this->app->bind(
+            'LeroyMerlin\ExactTarget\Client', function ($app) {
             $requestBuilder = new RequestBuilder(new GuzzleClient());
 
             return new Client(
@@ -40,8 +41,11 @@ class ServiceProvider extends LaravelServiceProvider
         $this->handleConfigs();
     }
 
+    /**
+     * Handle app configuration.
+     */
     private function handleConfigs()
     {
-        $this->app['config']->package($this->packageName, __DIR__.'/../config');
+        $this->app['config']->package($this->packageName, __DIR__ . '/../config');
     }
 }

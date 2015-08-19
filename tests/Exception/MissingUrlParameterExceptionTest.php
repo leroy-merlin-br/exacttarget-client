@@ -4,8 +4,8 @@ namespace LeroyMerlin\ExactTarget\Exception;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
-* Test case for MissingUrlParameterException class
-*/
+ * Test case for MissingUrlParameterException class
+ */
 class MissingUrlParameterExceptionTest extends TestCase
 {
     public function testConstructorShouldBuildMessageSuccessfully()

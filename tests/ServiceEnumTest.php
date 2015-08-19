@@ -4,8 +4,8 @@ namespace LeroyMerlin\ExactTarget;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
-* Test case for ServiceEnum class
-*/
+ * Test case for ServiceEnum class
+ */
 class ServiceEnumTest extends TestCase
 {
     /**
@@ -22,7 +22,7 @@ class ServiceEnumTest extends TestCase
     }
 
     /**
-     * @expectedException LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
+     * @expectedException \LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
      * @expectedExceptionMessage The following action key does not exist in ServiceEnum::$actionList: invalid-action
      */
     public function testToEndpointWithInvalidActionShouldThrowAnException()
@@ -36,18 +36,24 @@ class ServiceEnumTest extends TestCase
     public function getEndpoints()
     {
         return [
-            ['requestToken', [
-                'method'    => 'post',
-                'action'    => 'requestToken',
-                'subdomain' => 'auth',
-                'service'   => null,
-            ]],
-            ['addDataExtensionRow', [
-                'method'    => 'post',
-                'subdomain' => 'www',
-                'action'    => 'dataevents/key:{key}/rowset',
-                'service'   => 'hub',
-            ]],
+            [
+                'requestToken',
+                [
+                    'method'    => 'post',
+                    'action'    => 'requestToken',
+                    'subdomain' => 'auth',
+                    'service'   => null,
+                ],
+            ],
+            [
+                'addDataExtensionRow',
+                [
+                    'method'    => 'post',
+                    'subdomain' => 'www',
+                    'action'    => 'dataevents/key:{key}/rowset',
+                    'service'   => 'hub',
+                ],
+            ],
         ];
     }
 }
