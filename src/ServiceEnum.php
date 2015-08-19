@@ -25,6 +25,11 @@ class ServiceEnum
             'service'   => 'hub',
             'action'    => 'dataevents/key:{key}/rowset',
         ],
+        'validateEmail' => [
+            'method'    => 'post',
+            'service'   => 'address',
+            'action'    => 'validateEmail',
+        ]
     ];
 
     /**
