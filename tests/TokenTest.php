@@ -5,8 +5,8 @@ use Mockery as m;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
-* Test case for Token class
-*/
+ * Test case for Token class
+ */
 class TokenTest extends TestCase
 {
     public function testGetShouldExecuteRequestAndRetrieveATokenSuccessfully()

@@ -6,8 +6,8 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException as GuzzleException;
 
 /**
-* This class is responsible to execute calls to SalesForce API.
-*/
+ * This class is responsible to execute calls to SalesForce API.
+ */
 class RequestBuilder
 {
     /**
@@ -30,9 +30,11 @@ class RequestBuilder
     /**
      * Will perform a $verb request to the given $endpoint with $parameters.
      *
-     * @param  string $endpoint     Url where curly braces will be replaces, Ex: add/{id}/something
-     * @param  string $verb       May be get,delete,head,options,patch,post,put
+     * @param  string $endpoint   Url where curly braces will be replaces, Ex: add/{id}/something
+     * @param  string $verb       May be get, delete, head, options, patch, post, put
      * @param  array  $parameters Array of parameters, Ex: ['id' => 5, 'name' => 'john doe']
+     *
+     * @throws RequestException
      *
      * @return array Response data
      */
@@ -45,7 +47,7 @@ class RequestBuilder
             return $this->client->request($verb, $endpoint, $parameters);
         } catch (GuzzleException $error) {
             throw new RequestException(
-                (string)$error->getResponse()->getBody(),
+                (string) $error->getResponse()->getBody(),
                 $error->getCode()
             );
         }
