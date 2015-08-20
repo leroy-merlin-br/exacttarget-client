@@ -1,4 +1,4 @@
-# ExactTarget API wrapper _for Laravel_
+# ExactTarget API wrapper _for PHP and Laravel 4.2_
 
 A wrapper to ExactTarget **REST** API.
 
@@ -7,7 +7,6 @@ A wrapper to ExactTarget **REST** API.
 _[TODO]_
 
 ## Usage
-
 
 ### Vanilla PHP
 
@@ -30,22 +29,16 @@ $parameters = [
 try {
     $response = $client->validateEmail($parameters);
     var_dump((string) $response->getBody());
-} catch (LeroyMerlin\ExactTarget\Exception\ExactTargetClientException $error) {
+} catch (\LeroyMerlin\ExactTarget\Exception\ExactTargetClientException $error) {
     var_dump($error->getCode(), $error->getMessage());
 }
 ```
 
 
-### Laravel
-#### With facade
-_[TODO]_
-
-#### Without facade
+### Laravel 4.2
 
 ```php
-$exactTarget = App::make('LeroyMerlin\ExactTarget\Client');
-
-$exactTarget->requestToken(); // To obtain an OAuth token
+$client = App::make('LeroyMerlin\ExactTarget\Client');
 
 // As in https://code.exacttarget.com/apis-sdks/rest-api/v1/address/validateEmail.html
 $parameters = [
@@ -53,13 +46,14 @@ $parameters = [
     // 'some-url-param' => 'some-value'
     'data' => [
         'email' => 'johndoe@example.com',
-        'validators' => ['SyntaxValidator', 'ListDetectiveValidator'],
+        'validators' => ['SyntaxValidator', 'MXValidator', 'ListDetectiveValidator'],
     ],
 ];
 
-$result = $exactTarget->validateEmail($parameters);
-// $result will be [
-//     'email': 'johndoe@example.com',
-//     'valid': true
-// ];
+try {
+    $response = $client->validateEmail($parameters);
+    var_dump((string) $response->getBody());
+} catch (\LeroyMerlin\ExactTarget\Exception\ExactTargetClientException $error) {
+    var_dump($error->getCode(), $error->getMessage());
+}
 ```

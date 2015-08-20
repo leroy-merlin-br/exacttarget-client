@@ -24,21 +24,21 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
+        $this->handleConfigs();
+
         $this->app->bind(
             'LeroyMerlin\ExactTarget\Client', function ($app) {
             $requestBuilder = new RequestBuilder(new GuzzleClient());
 
             return new Client(
                 new Token(
-                    $app['config']->get('clientId'),
-                    $app['config']->get('clientSecret'),
+                    $app['config']->get('exacttarget-client::clientId'),
+                    $app['config']->get('exacttarget-client::clientSecret'),
                     $requestBuilder
                 ),
                 $requestBuilder
             );
         });
-
-        $this->handleConfigs();
     }
 
     /**
