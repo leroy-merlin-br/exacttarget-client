@@ -1,6 +1,7 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use Closure;
 use Illuminate\Foundation\Application;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
@@ -33,21 +34,21 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         // Expectation
         $app->shouldReceive('bind')
             ->once()
-            ->with(Client::class, [$provider, 'registerClient']);
+            ->with(Client::class, m::any());
 
         // Assertion
         $provider->register();
     }
 
-    public function testShouldRegisterClient()
+    public function testShouldGetClosure()
     {
         // Set
         $provider = new ServiceProvider(m::mock(Application::class));
+        $closure = $provider->getClosure();
 
-        $this->assertInstanceOf(
-            Client::class,
-            $provider->registerClient()
-        );
+        // Assertion
+        $this->assertInstanceOf(Closure::class, $closure);
+        $this->assertInstanceOf(Client::class, $closure());
     }
 }
 

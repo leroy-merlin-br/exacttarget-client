@@ -24,24 +24,26 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Client::class, [$this, 'registerClient']);
+        $this->app->bind(Client::class, $this->getClosure());
     }
 
     /**
-     * @return Client
+     * @return \Closure
      */
-    public function registerClient()
+    public function getClosure()
     {
-        $requestBuilder = new RequestBuilder(new GuzzleClient());
+        return function () {
+            $requestBuilder = new RequestBuilder(new GuzzleClient());
 
-        return new Client(
-            new Token(
-                config('exacttarget.clientId'),
-                config('exacttarget.clientSecret'),
+            return new Client(
+                new Token(
+                    config('exacttarget.clientId'),
+                    config('exacttarget.clientSecret'),
+                    $requestBuilder
+                ),
                 $requestBuilder
-            ),
-            $requestBuilder
-        );
+            );
+        };
     }
 
     /**
