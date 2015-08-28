@@ -49,18 +49,24 @@ class ClientTest extends TestCase
 
         $response = 'awesome response';
         $requestBuilder->shouldReceive('request')
-            ->once()
+            ->twice()
             ->with(
                 'https://auth.exacttargetapis.com/v1/requestToken',
                 'post',
                 $expectedParameters
             )->andReturn($response);
 
+        $client = (new  Client($token, $requestBuilder));
+
         $this->assertEquals(
             $response,
-            (new  Client($token, $requestBuilder))->requestToken(
-                $parameters
-            )
+            $client->requestToken($parameters)
+        );
+
+        //Coverage purposes
+        $this->assertEquals(
+            $response,
+            $client->requestToken($parameters)
         );
     }
 }
