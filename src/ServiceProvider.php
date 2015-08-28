@@ -51,7 +51,7 @@ class ServiceProvider extends LaravelServiceProvider
     {
         $this->publishes(
             [
-                __DIR__ . '/src/config/exacttarget.php' => config_path('exacttarget.php'),
+                __DIR__ . '/config/exacttarget.php' => config_path('exacttarget.php'),
             ]
         );
     }
