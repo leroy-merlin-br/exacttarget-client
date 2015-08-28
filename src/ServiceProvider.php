@@ -16,7 +16,7 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function boot()
     {
-        $this->package($this->packageName);
+        $this->handleConfigs();
     }
 
     /**
@@ -24,28 +24,37 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        $this->handleConfigs();
+        $this->app->bind(Client::class, $this->getClosure());
+    }
 
-        $this->app->bind(
-            'LeroyMerlin\ExactTarget\Client', function ($app) {
+    /**
+     * @return \Closure
+     */
+    public function getClosure()
+    {
+        return function () {
             $requestBuilder = new RequestBuilder(new GuzzleClient());
 
             return new Client(
                 new Token(
-                    $app['config']->get('exacttarget-client::clientId'),
-                    $app['config']->get('exacttarget-client::clientSecret'),
+                    config('exacttarget.clientId'),
+                    config('exacttarget.clientSecret'),
                     $requestBuilder
                 ),
                 $requestBuilder
             );
-        });
+        };
     }
 
     /**
      * Handle app configuration.
      */
-    private function handleConfigs()
+    protected function handleConfigs()
     {
-        $this->app['config']->package($this->packageName, __DIR__ . '/../config');
+        $this->publishes(
+            [
+                __DIR__ . '/config/exacttarget.php' => config_path('exacttarget.php'),
+            ]
+        );
     }
 }
