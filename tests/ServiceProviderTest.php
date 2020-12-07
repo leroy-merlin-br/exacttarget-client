@@ -13,6 +13,7 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         // Set
         $app      = m::mock(Application::class);
         $provider = m::mock(ServiceProvider::class . '[handleConfig, publishes]', [$app]);
+        $provider->shouldAllowMockingProtectedMethods();
 
         // Expectation
         $provider->shouldReceive('handleConfig')
