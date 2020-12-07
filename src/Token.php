@@ -1,6 +1,8 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * This class is responsible to call API in order to get a token to authenticate
  * next API requests
@@ -42,7 +44,7 @@ class Token
     /**
      * Retrieves a new token to API authentication
      *
-     * @return string
+     * @return ResponseInterface
      */
     public function request()
     {

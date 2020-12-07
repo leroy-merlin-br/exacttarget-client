@@ -1,6 +1,8 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * This class is responsible to make the calls to ExactTarget API.
  */
@@ -35,7 +37,7 @@ class Client
      * @throws \LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
      * @throws \LeroyMerlin\ExactTarget\Exception\RequestException
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function __call($action, $arguments)
     {

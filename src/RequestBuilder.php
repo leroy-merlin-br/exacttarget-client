@@ -4,6 +4,7 @@ namespace LeroyMerlin\ExactTarget;
 use LeroyMerlin\ExactTarget\Exception\RequestException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException as GuzzleException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * This class is responsible to execute calls to SalesForce API.
@@ -36,7 +37,7 @@ class RequestBuilder
      *
      * @throws RequestException
      *
-     * @return array Response data
+     * @return ResponseInterface
      */
     public function request(
         $endpoint,

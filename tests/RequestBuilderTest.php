@@ -1,6 +1,7 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use GuzzleHttp\Psr7\Response;
 use LeroyMerlin\ExactTarget\Exception\RequestException;
 use Mockery as m;
 
@@ -22,7 +23,7 @@ class RequestBuilderTest extends TestCase
     {
         $verb             = 'get';
         $endpoint         = 'http://phpunit.com/api-action';
-        $expectedResponse = 'action-response';
+        $expectedResponse = new Response(200, [], 'action-response');
         $client           = m::mock('GuzzleHttp\ClientInterface');
 
         $client->shouldReceive('request')
@@ -41,7 +42,7 @@ class RequestBuilderTest extends TestCase
         $verb             = 'custom';
         $endpoint         = 'http://phpunit.com/custom-api-action';
         $parameters       = ['some', 'custom', 'parameters'];
-        $expectedResponse = 'custom-action-response';
+        $expectedResponse = new Response(200, [], 'custom-action-response');
         $client           = m::mock('GuzzleHttp\ClientInterface');
 
         $client->shouldReceive('request')
