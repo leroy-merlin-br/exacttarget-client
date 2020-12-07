@@ -1,7 +1,7 @@
 <?php
 namespace LeroyMerlin\ExactTarget\Exception;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use LeroyMerlin\ExactTarget\TestCase;
 
 /**
  * Test case for MissingUrlParameterException class

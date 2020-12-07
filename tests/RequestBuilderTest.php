@@ -1,8 +1,8 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use LeroyMerlin\ExactTarget\Exception\RequestException;
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * Test case for Request class
@@ -12,7 +12,7 @@ class RequestBuilderTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         m::close();
@@ -59,10 +59,6 @@ class RequestBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \LeroyMerlin\ExactTarget\Exception\RequestException
-     * @expectedExceptionMessage Unexpected error ocurred
-     */
     public function testCallShouldThrowAnExceptionIfRequestFails()
     {
         $exception = m::mock('GuzzleHttp\Exception\ClientException');
@@ -80,6 +76,9 @@ class RequestBuilderTest extends TestCase
         $client->shouldReceive('request')
             ->once()
             ->andThrow($exception);
+
+        $this->expectException(RequestException::class);
+        $this->expectExceptionMessage('Unexpected error ocurred');
 
         (new RequestBuilder($client))->request('some-action');
     }

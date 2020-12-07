@@ -4,21 +4,17 @@ namespace LeroyMerlin\ExactTarget;
 use Closure;
 use Illuminate\Foundation\Application;
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
 
-class ServiceProviderTest extends PHPUnit_Framework_TestCase
+class ServiceProviderTest extends TestCase
 {
     public function testShouldHandleConfigsOnBoot()
     {
         // Set
         $app      = m::mock(Application::class);
-        $provider = m::mock(ServiceProvider::class . '[handleConfig, publishes]', [$app]);
+        $provider = m::mock(ServiceProvider::class . '[publishes]', [$app]);
         $provider->shouldAllowMockingProtectedMethods();
 
         // Expectation
-        $provider->shouldReceive('handleConfig')
-            ->once();
-
         $provider->shouldReceive('publishes')
             ->once();
 

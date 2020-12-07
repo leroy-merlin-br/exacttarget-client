@@ -1,7 +1,7 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use LeroyMerlin\ExactTarget\Exception\ActionNotFoundException;
 
 /**
  * Test case for ServiceEnum class
@@ -21,12 +21,11 @@ class ServiceEnumTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \LeroyMerlin\ExactTarget\Exception\ActionNotFoundException
-     * @expectedExceptionMessage The following action key does not exist in ServiceEnum::$actionList: invalid-action
-     */
     public function testToEndpointWithInvalidActionShouldThrowAnException()
     {
+        $this->expectException(ActionNotFoundException::class);
+        $this->expectExceptionMessage('The following action key does not exist in ServiceEnum::$actionList: invalid-action');
+
         ServiceEnum::toEndpoint('invalid-action');
     }
 

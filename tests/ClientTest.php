@@ -2,22 +2,12 @@
 namespace LeroyMerlin\ExactTarget;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * Test case for Client class
  */
 class ClientTest extends TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testPerformRequestShouldCallWebServiceUsingServiceEnum()
     {
         $requestBuilder     = m::mock(

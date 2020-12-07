@@ -1,7 +1,7 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use LeroyMerlin\ExactTarget\Exception\MissingUrlParameterException;
 
 /**
  * Class to generate API endpoint by the given action
@@ -54,15 +54,14 @@ class UrlBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \LeroyMerlin\ExactTarget\Exception\MissingUrlParameterException
-     * @expectedExceptionMessage Missing following parameter(s): key, another-key
-     */
     public function testBuildUrlWithMissingParametersShouldThrowException()
     {
         $parameters = ['useful-key' => 'Useful value'];
         $subdomain  = 'www';
         $action     = 'dataevents/key:{key}/{another-key}/useful:{useful-key}';
+
+        $this->expectException(MissingUrlParameterException::class);
+        $this->expectExceptionMessage('Missing following parameter(s): key, another-key');
 
         (new UrlBuilder())->build($subdomain, $action, null, $parameters);
     }
