@@ -2,22 +2,12 @@
 namespace LeroyMerlin\ExactTarget;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * Test case for Client class
  */
 class ClientTest extends TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testPerformRequestShouldCallWebServiceUsingServiceEnum()
     {
         $requestBuilder     = m::mock(
@@ -49,18 +39,24 @@ class ClientTest extends TestCase
 
         $response = 'awesome response';
         $requestBuilder->shouldReceive('request')
-            ->once()
+            ->twice()
             ->with(
                 'https://auth.exacttargetapis.com/v1/requestToken',
                 'post',
                 $expectedParameters
             )->andReturn($response);
 
+        $client = (new  Client($token, $requestBuilder));
+
         $this->assertEquals(
             $response,
-            (new  Client($token, $requestBuilder))->requestToken(
-                $parameters
-            )
+            $client->requestToken($parameters)
+        );
+
+        //Coverage purposes
+        $this->assertEquals(
+            $response,
+            $client->requestToken($parameters)
         );
     }
 }

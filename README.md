@@ -1,4 +1,4 @@
-# ExactTarget API wrapper _for PHP and Laravel 4.2_
+# ExactTarget API wrapper _for PHP, Laravel 5.* and 4.2_
 
 A wrapper to ExactTarget **REST** API.
 
@@ -34,6 +34,29 @@ try {
 }
 ```
 
+
+### Laravel 5.*
+
+```php
+$client = app(\LeroyMerlin\ExactTarget\Client::class);
+
+// As in https://code.exacttarget.com/apis-sdks/rest-api/v1/address/validateEmail.html
+$parameters = [
+    // optional
+    // 'some-url-param' => 'some-value'
+    'data' => [
+        'email' => 'johndoe@example.com',
+        'validators' => ['SyntaxValidator', 'MXValidator', 'ListDetectiveValidator'],
+    ],
+];
+
+try {
+    $response = $client->validateEmail($parameters);
+    var_dump((string) $response->getBody());
+} catch (\LeroyMerlin\ExactTarget\Exception\ExactTargetClientException $error) {
+    var_dump($error->getCode(), $error->getMessage());
+}
+```
 
 ### Laravel 4.2
 

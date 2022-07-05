@@ -2,7 +2,6 @@
 namespace LeroyMerlin\ExactTarget;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * Test case for Token class

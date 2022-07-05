@@ -1,8 +1,9 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use GuzzleHttp\Psr7\Response;
+use LeroyMerlin\ExactTarget\Exception\RequestException;
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * Test case for Request class
@@ -12,7 +13,7 @@ class RequestBuilderTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         m::close();
@@ -22,7 +23,7 @@ class RequestBuilderTest extends TestCase
     {
         $verb             = 'get';
         $endpoint         = 'http://phpunit.com/api-action';
-        $expectedResponse = 'action-response';
+        $expectedResponse = new Response(200, [], 'action-response');
         $client           = m::mock('GuzzleHttp\ClientInterface');
 
         $client->shouldReceive('request')
@@ -41,7 +42,7 @@ class RequestBuilderTest extends TestCase
         $verb             = 'custom';
         $endpoint         = 'http://phpunit.com/custom-api-action';
         $parameters       = ['some', 'custom', 'parameters'];
-        $expectedResponse = 'custom-action-response';
+        $expectedResponse = new Response(200, [], 'custom-action-response');
         $client           = m::mock('GuzzleHttp\ClientInterface');
 
         $client->shouldReceive('request')
@@ -59,10 +60,6 @@ class RequestBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \LeroyMerlin\ExactTarget\Exception\RequestException
-     * @expectedExceptionMessage Unexpected error ocurred
-     */
     public function testCallShouldThrowAnExceptionIfRequestFails()
     {
         $exception = m::mock('GuzzleHttp\Exception\ClientException');
@@ -80,6 +77,9 @@ class RequestBuilderTest extends TestCase
         $client->shouldReceive('request')
             ->once()
             ->andThrow($exception);
+
+        $this->expectException(RequestException::class);
+        $this->expectExceptionMessage('Unexpected error ocurred');
 
         (new RequestBuilder($client))->request('some-action');
     }
