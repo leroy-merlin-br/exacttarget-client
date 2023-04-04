@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:8.0-fpm
 LABEL maintainer="boitata@leroymerlin.com.br"
 
 USER root:root
