@@ -1,9 +1,14 @@
 <?php
 namespace LeroyMerlin\ExactTarget;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
 use LeroyMerlin\ExactTarget\Exception\RequestException;
 use Mockery as m;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Test case for Request class
@@ -62,24 +67,29 @@ class RequestBuilderTest extends TestCase
 
     public function testCallShouldThrowAnExceptionIfRequestFails()
     {
-        $exception = m::mock('GuzzleHttp\Exception\ClientException');
-        $response  = m::mock('Psr\Http\Message\ResponseInterface');
+        $exception = m::mock(ClientException::class);
+        $response  = m::mock(ResponseInterface::class);
+        $stream = m::mock(StreamInterface::class);
 
         $response->shouldReceive('getBody')
             ->once()
-            ->andReturn('Unexpected error ocurred');
+            ->andReturn($stream);
+
+        $stream->shouldReceive('__toString')
+            ->once()
+            ->andReturn('Unexpected error occurred');
 
         $exception->shouldReceive('getResponse')
             ->once()
             ->andReturn($response);
 
-        $client = m::mock('GuzzleHttp\ClientInterface');
+        $client = m::mock(ClientInterface::class);
         $client->shouldReceive('request')
             ->once()
             ->andThrow($exception);
 
         $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('Unexpected error ocurred');
+        $this->expectExceptionMessage('Unexpected error occurred');
 
         (new RequestBuilder($client))->request('some-action');
     }
