@@ -4,10 +4,10 @@
   "keywords": ["exacttarget", "laravel", "salesforce", "rest", "api", "sdk"],
   "license": "MIT",
   "require": {
-    "php": ">=7.2",
+    "php": "^8.0",
     "ext-json": "*",
-    "illuminate/config": "^5.8 || ^6.0 || ^7.0 || ^8.0",
-    "illuminate/support": "^5.8 || ^6.0 || ^7.0 || ^8.0",
+    "illuminate/config": "^9.0 || ^10.0",
+    "illuminate/support": "^9.0 || ^10.0",
     "guzzlehttp/guzzle": "^7.4.5"
   },
   "require-dev": {
