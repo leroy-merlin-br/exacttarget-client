@@ -8,12 +8,10 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Client
 {
-    /**
-     * OAuth token passed to API requests.
-     *
-     * @var string
-     */
-    protected $accessToken;
+    protected ?string $accessToken = null;
+    protected Token $token;
+    protected RequestBuilder $requestBuilder;
+    protected UrlBuilder $urlBuilder;
 
     /**
      * Constructor
