@@ -5,16 +5,17 @@ on:
 jobs:
   testing:
     name: Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         php:
-          - "8.0"
-          - "8.1"
           - "8.2"
+          - "8.3"
+          - "8.4"
+          - "8.5"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -24,7 +25,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Composer
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
 
       - name: Running tests
         run: vendor/bin/phpunit
